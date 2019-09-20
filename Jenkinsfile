@@ -27,7 +27,7 @@ pipeline{
   }
   post {
     always {
-      archive 'target/**/*.jar'
+      archiveArtifacts 'target/**/*.jar'
     }
   }
 }
