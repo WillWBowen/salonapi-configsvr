@@ -18,5 +18,16 @@ pipeline{
         sh 'mvn install'
       }
     }
+    stage('Make Container') {
+      steps {
+        sh "docker build -t willwbowen/salonapi-configsvr:${env.BUILD_ID} ."
+        sh "docker tag willwbowen/salonapi-configsvr:${env.BUILD_ID} willwbowen/salonapi-configsvr:latest"
+      }
+    }
+  }
+  post {
+    always {
+      archive 'target/**/*.jar'
+    }
   }
 }
