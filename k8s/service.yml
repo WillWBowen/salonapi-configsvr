@@ -9,7 +9,7 @@ spec:
   ports:
   - name: configsvr
     port: $CONFIGSERVER_PORT
-    nodePort: $CONFIGSERVER_PORT
+    nodePort: 30001
     protocol: TCP
   selector:
     app: configsvr
