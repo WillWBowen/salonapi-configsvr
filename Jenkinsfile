@@ -26,8 +26,10 @@ pipeline{
     }
     stage('Make Container') {
       steps {
-        dockerImageVersioned = docker.build registry + ":${BUILD_ID}"
-        dockerImageLatest = docker.tag dockerImageVersioned registry+"latest"
+        script {
+          dockerImageVersioned = docker.build registry + ":${BUILD_ID}"
+          dockerImageLatest = docker.tag dockerImageVersioned registry+"latest"
+        }
       }
     }
   }
@@ -36,9 +38,11 @@ pipeline{
       archiveArtifacts 'target/**/*.jar'
     }
     success {
-      withRegistry('', registryCredential) {
-        dockerImageVersioned.push()
-        dockerImageLatest.push()
+      script {
+        withRegistry('', registryCredential) {
+          dockerImageVersioned.push()
+          dockerImageLatest.push()
+        }
       }
     }
   }
