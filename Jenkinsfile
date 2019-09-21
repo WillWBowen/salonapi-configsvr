@@ -6,8 +6,8 @@ pipeline{
   }
   environment {
     CONFIGSERVER_PORT = "8888"
-    CONFIGSERVER_PASSWORD = "NotTheActualPassword"
-    ENCRYPT_KEY = "NotTheActualKey"
+    CONFIGSERVER_PASSWORD = credentials('salonapi-configserver-password')
+    ENCRYPT_KEY = credentials('salonapi-encryption-key')
   }
   stages {
     stage('Initialize') {
