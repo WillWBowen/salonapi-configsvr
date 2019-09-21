@@ -25,10 +25,12 @@ pipeline{
       }
     }
     stage('Push') {
-      withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-        sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
-        sh 'docker push willwbowen/salonapi-configsvr:${env.BUILD_ID}'
-        sh 'docker push willwbowen/salonapi-configsvr:latest'
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
+          sh 'docker push willwbowen/salonapi-configsvr:${env.BUILD_ID}'
+          sh 'docker push willwbowen/salonapi-configsvr:latest'
+        }
       }
     }
     stage('Deploy') {
