@@ -1,10 +1,7 @@
 pipeline{
   agent any
   environment {
-    registry = "willwbowen/salonapi-configsvr"
     registryCredential = 'dockerhub'
-    dockerImageVersioned = ''
-    dockerImageLatest = ''
   }
   tools {
     maven 'Maven 3.6.2'
@@ -26,10 +23,8 @@ pipeline{
     }
     stage('Make Container') {
       steps {
-        script {
-          dockerImageVersioned = docker.build registry + ":${BUILD_ID}"
-          dockerImageLatest = docker.tag dockerImageVersioned registry+"latest"
-        }
+        sh "docker build -t willwbowen/salonapi-configsvr:${env.BUILD_ID} ."
+        sh "docker tag willwbowen/salonapi-configsvr:${env.BUILD_ID} willwbowen/salonapi-configsvr:latest"
       }
     }
   }
@@ -38,11 +33,9 @@ pipeline{
       archiveArtifacts 'target/**/*.jar'
     }
     success {
-      script {
-        withRegistry('', registryCredential) {
-          dockerImageVersioned.push()
-          dockerImageLatest.push()
-        }
+      withRegistry('', registryCredential) {
+        sh "docker push willwbowen/salonapi-configsvr:${env.BUILD_ID}"
+        sh "docker push willwbowen/salonapi-configsvr:latest"
       }
     }
   }
