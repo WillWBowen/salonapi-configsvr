@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: configsvr-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configsvr
+  template:
+    metadata:
+      labels:
+        app: configsvr
+    spec:
+      containers:
+        - name: configsvr
+          image: willwbowen/salonapi-configsvr
+          ports:
+            - containerPort: 8888
+          env:
+          - name: CONFIGSERVER_PORT
+            value: "$CONFIGSERVER_PORT"
+          - name: CONFIGSERVER_PASSWORD
+            value: "$CONFIGSERVER_PASSWORD"
+          - name: ENCRYPT_KEY
+            value: "$ENCRYPT_KEY"
