@@ -4,6 +4,11 @@ pipeline{
     maven 'Maven 3.6.2'
     jdk 'jdk8'
   }
+  environment {
+    CONFIGSERVER_PORT = "8888"
+    CONFIGSERVER_PASSWORD = "NotTheActualPassword"
+    ENCRYPT_KEY = "NotTheActualKey"
+  }
   stages {
     stage('Initialize') {
       steps {
