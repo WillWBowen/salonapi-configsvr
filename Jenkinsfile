@@ -20,29 +20,29 @@ pipeline{
     }
     stage('Make Container') {
       steps {
-        sh '''
+        sh """
           docker build -t willwbowen/salonapi-configsvr:${env.BUILD_ID} .
           docker tag willwbowen/salonapi-configsvr:${env.BUILD_ID} willwbowen/salonapi-configsvr:latest
-        '''
+        """
       }
     }
     stage('Push') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-          sh '''
+          sh """
             docker login -u ${USERNAME} -p ${PASSWORD}
             docker push willwbowen/salonapi-configsvr:${env.BUILD_ID}
             docker push willwbowen/salonapi-configsvr:latest
-          '''
+          """
         }
       }
     }
     stage('Deploy') {
       steps {
-        sh '''
+        sh """
           envsubst < ./k8s/deployment.yml | kubectl apply -f -
           envsubst < ./k8s/service.yml | kubectl apply -f -
-        '''
+        """
       }
     }
   }
