@@ -1,8 +1,5 @@
 pipeline{
   agent any
-  environment {
-    registryCredential = 'dockerhub'
-  }
   tools {
     maven 'Maven 3.6.2'
     jdk 'jdk8'
@@ -33,7 +30,8 @@ pipeline{
       archiveArtifacts 'target/**/*.jar'
     }
     success {
-      withRegistry('', registryCredential) {
+      withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        sh "docker login -u ${USERNAME} -p ${PASSWORD}"
         sh "docker push willwbowen/salonapi-configsvr:${env.BUILD_ID}"
         sh "docker push willwbowen/salonapi-configsvr:latest"
       }
