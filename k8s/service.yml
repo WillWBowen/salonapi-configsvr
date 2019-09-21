@@ -6,7 +6,7 @@ metadata:
     app: configsvr
 spec:
   ports:
-    port: 8888
+  - port: 8888
     nodePort: 30001
     protocol: TCP
   selector:
