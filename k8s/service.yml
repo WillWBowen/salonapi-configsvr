@@ -5,6 +5,7 @@ metadata:
   labels:
     app: configsvr
 spec:
+  type: NodePort
   ports:
   - port: 8888
     nodePort: 30001
