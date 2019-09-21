@@ -7,8 +7,9 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: $CONFIGSERVER_PORT
-    nodePort: 30001
+  - name: configsvr
+    port: $CONFIGSERVER_PORT
+    nodePort: $CONFIGSERVER_PORT
     protocol: TCP
   selector:
     app: configsvr
