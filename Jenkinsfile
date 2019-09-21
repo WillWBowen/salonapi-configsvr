@@ -20,23 +20,29 @@ pipeline{
     }
     stage('Make Container') {
       steps {
-        sh 'docker build -t willwbowen/salonapi-configsvr:${env.BUILD_ID} .'
-        sh 'docker tag willwbowen/salonapi-configsvr:${env.BUILD_ID} willwbowen/salonapi-configsvr:latest'
+        sh '''
+          docker build -t willwbowen/salonapi-configsvr:${env.BUILD_ID} .
+          docker tag willwbowen/salonapi-configsvr:${env.BUILD_ID} willwbowen/salonapi-configsvr:latest
+        '''
       }
     }
     stage('Push') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-          sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
-          sh 'docker push willwbowen/salonapi-configsvr:${env.BUILD_ID}'
-          sh 'docker push willwbowen/salonapi-configsvr:latest'
+          sh '''
+            docker login -u ${USERNAME} -p ${PASSWORD}
+            docker push willwbowen/salonapi-configsvr:${env.BUILD_ID}
+            docker push willwbowen/salonapi-configsvr:latest
+          '''
         }
       }
     }
     stage('Deploy') {
       steps {
-        sh 'envsubst < ./k8s/deployment.yml | kubectl apply -f -'
-        sh 'envsubst < ./k8s/service.yml | kubectl apply -f -'
+        sh '''
+          envsubst < ./k8s/deployment.yml | kubectl apply -f -
+          envsubst < ./k8s/service.yml | kubectl apply -f -
+        '''
       }
     }
   }
