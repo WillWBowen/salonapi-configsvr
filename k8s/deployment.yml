@@ -19,7 +19,10 @@ spec:
             - containerPort: 8888
           env:
           - name: CONFIGSERVER_PORT
-            value: "8888"
+            valueFrom:
+              configKeyRef:
+                name: configserver
+                key: port
           - name: CONFIGSERVER_PASSWORD
             valueFrom:
               secretKeyRef:
