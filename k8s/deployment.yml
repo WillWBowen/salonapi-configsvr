@@ -20,7 +20,7 @@ spec:
           env:
           - name: CONFIGSERVER_PORT
             valueFrom:
-              configKeyRef:
+              configMapKeyRef:
                 name: configserver
                 key: port
           - name: CONFIGSERVER_PASSWORD
