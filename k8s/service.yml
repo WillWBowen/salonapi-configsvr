@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: configsvr
+  name: configserver
   labels:
-    app: configsvr
+    app: configserver
 spec:
   type: NodePort
   ports:
@@ -11,4 +11,4 @@ spec:
     nodePort: 30001
     protocol: TCP
   selector:
-    app: configsvr
+    app: configserver

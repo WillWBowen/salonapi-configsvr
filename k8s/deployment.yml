@@ -1,19 +1,19 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: configsvr
+  name: configserver
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: configsvr
+      app: configserver
   template:
     metadata:
       labels:
-        app: configsvr
+        app: configserver
     spec:
       containers:
-        - name: configsvr
+        - name: configserver
           image: willwbowen/salonapi-configsvr
           ports:
             - containerPort: 8888
@@ -23,10 +23,10 @@ spec:
           - name: CONFIGSERVER_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: configsvr
+                name: configserver
                 key: password
           - name: ENCRYPT_KEY
             valueFrom:
               secretKeyRef:
-                name: configsvr
+                name: configserver
                 key: encrypt-key
